@@ -19,3 +19,20 @@
     width: 150px;
     height: 150px;
  }
+
+ #details-container div {
+    display: flex;
+    justify-content: space-evenly;
+ }
+
+ #details-div {
+    display: flex;
+    flex-direction: column;
+ }
+
+ #add-fav-btn {
+    height: 30px;
+ }
+ #home-btn {
+    height: 30px;
+ }

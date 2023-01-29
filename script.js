@@ -6,6 +6,8 @@ const superResult = document.getElementById("super_result");
 
 const superHeroDetails = document.getElementById('superhero_result');
 
+let favHeros = []
+
 
 
 function searchSuperHero() {
@@ -52,7 +54,7 @@ function renderSuperData(data, index){
     let div = document.createElement('div');
     div.id = index;
     div.onclick = (event)=>{
-        handleSuperHeroClick(event)
+        handleSuperHeroClick(data)
     }
 
     div.innerHTML =
@@ -66,31 +68,81 @@ function renderSuperData(data, index){
     div.classList.add('superherocards'); 
 
     superResult.appendChild(div); 
+
 }
 
 
-function handleSuperHeroClick(event){
+function handleSuperHeroClick(superHeroDetails){
     let superHeros = JSON.parse(localStorage.getItem('superHeros')) || [];
-    const index = event.target.id;
-    window.open("superhero.html")
-    setTimeout((superHeros , index) => {
-        renderSuperHeroDetails(superHeros[index])
-    }, 3000);
+    // window.open("superhero.html")
+    renderSuperHeroDetails(superHeroDetails)
+    // setTimeout((superHeros , index) => {
+    //     renderSuperHeroDetails(superHeros[indexId])
+    // }, 3000);
 }
 
 function renderSuperHeroDetails(data){
+    document.getElementById("main-container").style.display = "None"
+    let detailsContainer = document.getElementById("details-container")
+    document.getElementById("details-container").style.display = ""
+
+    
+    // console.log(data)
     let div = document.createElement('div');
+    let detailsdiv = document.createElement('div')
+    detailsdiv.setAttribute('id','details-div')
 
 
     div.innerHTML=
     `
     <h1>${data.name}</h1>
 
-    <img src="${data.image.url}">
+    <img width="150px" src="${data.image.url}">
+
+    <button id="add-fav-btn">Add Fav</button>
+    <button id="home-btn">Home</button>
     
     `
 
-    superHeroDetails.appendChild(div)
+    detailsdiv.innerHTML = 
+    `
+    <h3>Appearance</h3>
+    <p>${JSON.stringify(data.appearance)}</p>
+    <h3>Powerstats</h3>
+    <p>${JSON.stringify(data.powerstats)}</p>
+    <h3>Biography</h3>
+    <p>${JSON.stringify(data.biography)}</p>
+    <h3>Work</h3>
+    <p>${JSON.stringify(data.work)}</p>
+    <h3>Connections</h3>
+    <p>${JSON.stringify(data.connections)}</p>
+    
+    `
+    detailsContainer.appendChild(div)
+    detailsContainer.appendChild(detailsdiv)
+
+    document.addEventListener("click", function(e){
+        const target = e.target.closest("#home-btn"); // Or any other selector.
+      
+        if(target){
+            detailsContainer = " "
+            document.getElementById("main-container").style.display = ""
+            superResult.innerHTML = ""
+            div.innerHTML= ""
+            detailsdiv.innerHTML = ""
+        }
+      });
+    document.addEventListener("click", function(e){
+        const target = e.target.closest("#add-fav-btn"); // Or any other selector.
+      
+        if(target){
+           favHeros.push(data.name)
+           console.log(favHeros)
+        }
+      });
+
+
+    // superHeroDetails.appendChild(div)
 }
 
 submitBtn && submitBtn.addEventListener("click", searchSuperHero);
