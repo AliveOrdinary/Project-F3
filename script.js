@@ -6,6 +6,8 @@ const superResult = document.getElementById("super_result");
 
 const superHeroDetails = document.getElementById('superhero_result');
 
+let favul = document.getElementById('fav-list');
+
 let favHeros = []
 
 
@@ -14,6 +16,9 @@ function searchSuperHero() {
     const sName = superHeroName.value;
     console.log("searching")
     fetchSuperHeroData(sName);
+    superResult.innerHTML = ""
+    favul.innerHTML = ""
+    
 }
 
 
@@ -95,7 +100,7 @@ function renderSuperHeroDetails(data){
 
     div.innerHTML=
     `
-    <h1>${data.name}</h1>
+    <h1 id="hero-name">${data.name}</h1>
 
     <img width="150px" src="${data.image.url}">
 
@@ -130,6 +135,7 @@ function renderSuperHeroDetails(data){
             superResult.innerHTML = ""
             div.innerHTML= ""
             detailsdiv.innerHTML = ""
+            superHeroName.value = ""
         }
       });
     document.addEventListener("click", function(e){
@@ -137,7 +143,7 @@ function renderSuperHeroDetails(data){
       
         if(target){
            favHeros.push(data.name)
-           console.log(favHeros)
+           favHeros = Array.from(new Set(favHeros));
         }
       });
 
@@ -147,5 +153,14 @@ function renderSuperHeroDetails(data){
 
 submitBtn && submitBtn.addEventListener("click", searchSuperHero);
 
+document.getElementById("fav-btn").onclick= () => {
+    
 
+    favHeros.forEach((item)=>{
+        let li = document.createElement('li');
+        li.textContent = item;
+        favul.appendChild(li);
+    })
+
+}
 
